@@ -1,28 +1,35 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { AppContext } from "../../AppContextProvider";
 
 import MessageItem from "./Message/MessageItem";
 import FeedHeader from "./FeedHeader/FeedHeader";
+import Skeleton from "./Skeleton/Skeleton";
 
 const Feed: FC = () => {
-  const { messages, setMessages } = useContext(AppContext);
+  const { messages, setMessages, setIsError } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("/api/messages")
       .then((response) => response.json())
       .then((json) => setMessages(json))
-      .catch((error) => console.log("Error fetching messages", error));
+      .catch(() => setIsError(true))
+      .finally(() => setIsLoading(false));
     /* eslint-disable-next-line */
   }, []);
 
   return (
     <div className="container mx-auto max-w-4xl">
       <FeedHeader />
-      <div className="space-y-4 ">
-        {messages?.map((item, index) => (
-          <MessageItem message={item} key={index} />
-        ))}
-      </div>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <div className="space-y-4 ">
+          {messages?.map((item, index) => (
+            <MessageItem message={item} key={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

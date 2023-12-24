@@ -9,7 +9,7 @@ interface MessageHeaderProps {
 
 const MessageHeader: FC<MessageHeaderProps> = ({ fullName, avatar, date }) => {
   return (
-    <div className="flex gap-x-4 items-center">
+    <div className="flex gap-x-4 items-center ">
       <img
         className="w-12 h-12 rounded-full object-cover"
         src={avatar}

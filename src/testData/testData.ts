@@ -62,6 +62,13 @@ export const testMessages = [
   },
   {
     id: 5,
+    content:
+      "Proin augue odio, porttitor sed pulvinar id, fringilla nec lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    author: testUsers[0],
+    date: "2023-12-22T12:33:00",
+  },
+  {
+    id: 6,
     content: "Donec placerat augue in accumsan faucibus.",
     author: testUsers[2],
     date: "2023-12-22T17:55:19",

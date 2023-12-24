@@ -5,8 +5,10 @@ import React, {
   createContext,
   useState,
 } from "react";
+
 import { User } from "./types/user.types";
 import { Message } from "./types/message.types";
+import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
 
 interface AppContextProps {
   children: React.ReactNode;
@@ -17,6 +19,7 @@ interface AppContextValue {
   setUser: Dispatch<SetStateAction<User | null>>;
   messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
+  setIsError: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultValue: AppContextValue = {
@@ -24,16 +27,21 @@ const defaultValue: AppContextValue = {
   setUser: () => {},
   messages: [],
   setMessages: () => {},
+  setIsError: () => {},
 };
 export const AppContext = createContext(defaultValue);
 
 export const AppContextProvider: FC<AppContextProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isError, setIsError] = useState<boolean>(false);
 
   return (
-    <AppContext.Provider value={{ user, setUser, messages, setMessages }}>
+    <AppContext.Provider
+      value={{ user, setUser, messages, setMessages, setIsError }}
+    >
       {children}
+      {isError && <ErrorAlert />}
     </AppContext.Provider>
   );
 };

@@ -6,7 +6,7 @@ import { generateId } from "../../../../constants/generateId";
 import { AppContext } from "../../../../AppContextProvider";
 
 const NewMesssage: FC = () => {
-  const { user, setMessages } = useContext(AppContext);
+  const { user, setMessages, setIsError } = useContext(AppContext);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => {
@@ -44,13 +44,10 @@ const NewMesssage: FC = () => {
       .then((response) => response.json())
       .then((json) => {
         const newMessage = json.message;
-        setMessages((prev) => [...prev, newMessage]);
+        setMessages((prev) => [newMessage, ...prev]);
         handleCancel();
       })
-      .catch((error) => {
-        console.log("Error adding message.", error);
-        // toast.error("Error adding note.");
-      });
+      .catch(() => setIsError(true));
   };
 
   return (
@@ -68,8 +65,8 @@ const NewMesssage: FC = () => {
           className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 max-h-full bg-[#607d8b54]"
         >
           <form className="relative p-4 w-full max-w-2xl max-h-full">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <div className="relative bg-white rounded-lg shadow">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                 <h3 className="text-xl font-semibold text-sky-700">
                   New Message
                 </h3>
@@ -88,7 +85,7 @@ const NewMesssage: FC = () => {
                   ({message.length}/{maxLength} characters)
                 </p>
               </div>
-              <div className="flex items-center gap-x-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <div className="flex items-center gap-x-4 p-4 md:p-5 border-t border-gray-200 rounded-b">
                 <button
                   data-modal-hide="default-modal"
                   type="submit"

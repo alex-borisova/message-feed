@@ -14,7 +14,12 @@ createServer({
       return testUsers[0];
     });
     this.get("/messages", () => {
-      return testMessages;
+      //Let's imagine that sorting is on the server side
+      return testMessages.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA < dateB ? 1 : -1;
+      });
     });
     this.post("/messages", (schema, request) => {
       const attrs = JSON.parse(request.requestBody);
