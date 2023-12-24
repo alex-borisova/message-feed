@@ -1,7 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
+import moment from "moment";
+
 import AddIcon from "./../../../../assets/AddIcon.svg?react";
+import { generateId } from "../../../../constants/generateId";
+import { AppContext } from "../../../../AppContextProvider";
 
 const NewMesssage: FC = () => {
+  const { user, setMessages } = useContext(AppContext);
+
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => {
     setOpenModal(!openModal);
@@ -13,9 +19,38 @@ const NewMesssage: FC = () => {
     setMessage(event.target.value);
   };
 
+  const createDate = () => {
+    const now = Date.now();
+    //for service datetime type
+    return moment(now).format("YYYY-MM-DDTHH:mm:ss");
+  };
+
   const handleCancel = () => {
     handleOpenModal();
     setMessage("");
+  };
+
+  const handleSend = (event: React.MouseEvent) => {
+    event.preventDefault();
+    fetch("/api/messages", {
+      method: "POST",
+      body: JSON.stringify({
+        id: generateId(),
+        content: message,
+        author: user,
+        date: createDate(),
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        const newMessage = json.message;
+        setMessages((prev) => [...prev, newMessage]);
+        handleCancel();
+      })
+      .catch((error) => {
+        console.log("Error adding message.", error);
+        // toast.error("Error adding note.");
+      });
   };
 
   return (
@@ -59,6 +94,7 @@ const NewMesssage: FC = () => {
                   type="submit"
                   className="text-white bg-blue-500 hover:bg-blue-400 disabled:bg-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center shadow-sm"
                   disabled={message.length < 1}
+                  onClick={handleSend}
                 >
                   Send
                 </button>

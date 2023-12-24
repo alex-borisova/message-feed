@@ -1,4 +1,5 @@
 import { FC } from "react";
+import moment from "moment";
 
 interface MessageHeaderProps {
   fullName: string;
@@ -16,7 +17,9 @@ const MessageHeader: FC<MessageHeaderProps> = ({ fullName, avatar, date }) => {
       />
       <div className="text-center md:text-left ">
         <p className="text-sky-500 font-medium text-base">{fullName}</p>
-        <p className="text-slate-400 text-xs">{date}</p>
+        <p className="text-slate-400 text-xs">
+          {moment(date).format("DD.MM.YYYY HH:mm")}
+        </p>
       </div>
     </div>
   );

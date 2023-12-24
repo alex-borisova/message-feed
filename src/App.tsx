@@ -1,13 +1,34 @@
-import Feed from "./components/Feed/Feed";
-import UserCard from "./components/User/UserCard";
-import { testUser } from "./testData/testData";
+import { createServer } from "miragejs";
+
+import AppContextProvider from "./AppContextProvider";
+import Home from "./components/Home/Home";
+import { generateId } from "./constants/generateId";
+import { testMessages, testUsers } from "./testData/testData";
+
+//mock API
+createServer({
+  routes() {
+    this.namespace = "api";
+
+    this.get("/profile", () => {
+      return testUsers[0];
+    });
+    this.get("/messages", () => {
+      return testMessages;
+    });
+    this.post("/messages", (schema, request) => {
+      const attrs = JSON.parse(request.requestBody);
+      attrs.id = generateId();
+      return { message: attrs };
+    });
+  },
+});
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-[#eff6ff] px-8 py-5 space-y-7">
-      <UserCard user={testUser} />
-      <Feed />
-    </div>
+    <AppContextProvider>
+      <Home />
+    </AppContextProvider>
   );
 };
 
