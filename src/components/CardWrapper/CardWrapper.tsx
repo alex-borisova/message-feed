@@ -2,11 +2,12 @@ import { FC } from "react";
 
 interface CardWrapperProps {
   children: React.ReactNode;
+  addionalStyles?: string;
 }
 
-const CardWrapper: FC<CardWrapperProps> = ({ children }) => {
+const CardWrapper: FC<CardWrapperProps> = ({ children, addionalStyles }) => {
   return (
-    <div className="bg-white md:flex rounded-md p-8 md:p-0 shadow-lg">
+    <div className={`bg-white md:flex rounded-md shadow-lg ${addionalStyles}`}>
       {children}
     </div>
   );

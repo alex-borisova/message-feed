@@ -18,7 +18,7 @@ const UserCard: FC = () => {
 
   return (
     <div className="container mx-auto max-w-7xl">
-      <CardWrapper>
+      <CardWrapper addionalStyles="p-8 md:p-0">
         {isLoading ? (
           <Skeleton />
         ) : (
