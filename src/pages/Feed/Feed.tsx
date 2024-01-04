@@ -3,19 +3,20 @@ import { useStore } from "@nanostores/react";
 
 import { $messagesStore, setMessages, handleHasError } from "../../store";
 import FeedHeader from "../../components/FeedHeader/FeedHeader";
-import FeedSkeleton from "../../components/Skeletons/FeedSkeleton/FeedSkeleton";
 import Messages from "../../components/Messages/Messages";
 
 const Feed: FC = () => {
   const messages = useStore($messagesStore);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("/api/messages")
       .then((response) => response.json())
-      .then((json) => setMessages(json))
-      .catch(() => handleHasError(true))
-      .finally(() => setIsLoading(false));
+      .then((json) => {
+        setMessages(json);
+        setLoading(false);
+      })
+      .catch(() => handleHasError(true));
 
     //unfortunately, if we create a new message,
     //then go to the user's page and return back,
@@ -27,7 +28,7 @@ const Feed: FC = () => {
   return (
     <div className="container mx-auto max-w-6xl">
       <FeedHeader name="Feed" withActionButton />
-      {isLoading ? <FeedSkeleton /> : <Messages messages={messages} />}
+      <Messages messages={messages} loading={loading} />
     </div>
   );
 };

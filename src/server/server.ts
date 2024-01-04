@@ -22,9 +22,13 @@ createServer({
     });
     this.get("/messages/:userId", (schema, request) => {
       const userId = +request.params.userId;
-      const filteredMessages = $messagesStore
-        .get()
-        .filter((item) => item.author.id === userId);
+      //if we are in User page and refresh the page,
+      //then we need to get messages again, but new messages won't appear
+      const messages =
+        $messagesStore.get().length > 0 ? $messagesStore.get() : testMessages;
+      const filteredMessages = messages.filter(
+        (item) => item.author.id === userId
+      );
 
       //Let's imagine that sorting is on the server side
       return sortByDate(filteredMessages);

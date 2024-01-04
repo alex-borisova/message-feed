@@ -9,38 +9,57 @@ import {
   $userMessagesStore,
   setUserMessages,
 } from "../../store";
-import { User } from "../../types/user.types";
-import FeedSkeleton from "../../components/Skeletons/FeedSkeleton/FeedSkeleton";
+import BackButton from "../../components/BackButton/BackButton";
+import { $user, setUser } from "../../store/user";
 
 const UserPage = () => {
   const userId = sessionStorage.getItem("userId") || "";
   const userMessages = useStore($userMessagesStore);
+  const userData = useStore($user);
 
-  const [user, setUser] = useState<User>();
-  const feedName = user ? `${user?.name}'s Feed` : "";
+  const feedName = userData ? `${userData?.name}'s Feed` : "";
 
-  useEffect(() => {
+  const [loadingUser, setLoadingUser] = useState<boolean>(false);
+  const [loadingFeed, setLoadingFeed] = useState<boolean>(false);
+
+  const getUser = () => {
+    setLoadingUser(true);
     fetch(`/api/profile/${userId}`)
       .then((response) => response.json())
-      .then((json) => setUser(json))
+      .then((json) => {
+        setUser(json);
+        setLoadingUser(false);
+      })
       .catch(() => handleHasError(true));
+  };
 
+  const getMessages = () => {
     //if we had a normal server then we make call with search query parameters:
     //fetch("/api/messages?search=user.id:1").then((res) => .....).catch(...);
+    setLoadingFeed(true);
     fetch(`/api/messages/${userId}`)
       .then((response) => response.json())
-      .then((json) => setUserMessages(json))
+      .then((json) => {
+        setUserMessages(json);
+        setLoadingFeed(false);
+      })
       .catch(() => handleHasError(true));
+  };
 
-    return () => setUserMessages(undefined); //TODO
+  useEffect(() => {
+    getUser();
+    getMessages();
+
+    /* eslint-disable-next-line */
   }, [userId]);
 
   return (
     <div className="min-h-screen bg-[#eff6ff] px-8 py-5 space-y-7">
-      <UserCard user={user} />
+      <BackButton />
+      <UserCard user={userData} loading={loadingUser} />
       <div className="container mx-auto max-w-4xl">
         <FeedHeader name={feedName} />
-        {userMessages ? <Messages messages={userMessages} /> : <FeedSkeleton />}
+        <Messages messages={userMessages} loading={loadingFeed} />
       </div>
     </div>
   );
