@@ -1,26 +1,17 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC } from "react";
 import CardWrapper from "../CardWrapper/CardWrapper";
-import { AppContext } from "../../AppContextProvider";
-import Skeleton from "./Skeleton/Skeleton";
+import UserSkeleton from "../Skeletons/UserSkeleton/UserSkeleton";
+import { User } from "../../types/user.types";
 
-const UserCard: FC = () => {
-  const { user, setUser, setIsError } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    fetch("/api/profile")
-      .then((response) => response.json())
-      .then((json) => setUser(json))
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
-    /* eslint-disable-next-line */
-  }, []);
-
+interface UserCardProps {
+  user?: User;
+}
+const UserCard: FC<UserCardProps> = ({ user }) => {
   return (
     <div className="container mx-auto max-w-7xl">
       <CardWrapper addionalStyles="p-8 md:p-0">
-        {isLoading ? (
-          <Skeleton />
+        {!user ? ( //TODO
+          <UserSkeleton />
         ) : (
           <>
             <img

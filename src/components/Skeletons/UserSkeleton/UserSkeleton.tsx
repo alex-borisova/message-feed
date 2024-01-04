@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const Skeleton: FC = () => {
+const UserSkeleton: FC = () => {
   return (
     <div
       role="status"
@@ -30,4 +30,4 @@ const Skeleton: FC = () => {
   );
 };
 
-export default Skeleton;
+export default UserSkeleton;

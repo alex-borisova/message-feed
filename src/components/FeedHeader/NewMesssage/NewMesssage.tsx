@@ -1,12 +1,13 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import moment from "moment";
+import { useStore } from "@nanostores/react";
 
-import AddIcon from "./../../../../assets/AddIcon.svg?react";
-import { generateId } from "../../../../constants/generateId";
-import { AppContext } from "../../../../AppContextProvider";
+import { AddIcon } from "../../../assets";
+import { generateId } from "../../../operations";
+import { handleHasError, setMessages, $loggedUser } from "../../../store";
 
 const NewMesssage: FC = () => {
-  const { user, setMessages, setIsError } = useContext(AppContext);
+  const currentUser = useStore($loggedUser);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => {
@@ -37,17 +38,17 @@ const NewMesssage: FC = () => {
       body: JSON.stringify({
         id: generateId(),
         content: message,
-        author: user,
+        author: currentUser,
         date: createDate(),
       }),
     })
       .then((response) => response.json())
       .then((json) => {
         const newMessage = json.message;
-        setMessages((prev) => [newMessage, ...prev]);
+        setMessages(newMessage);
         handleCancel();
       })
-      .catch(() => setIsError(true));
+      .catch(() => handleHasError(true));
   };
 
   return (

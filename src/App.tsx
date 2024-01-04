@@ -1,39 +1,41 @@
-import { createServer } from "miragejs";
+import { useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useStore } from "@nanostores/react";
 
-import AppContextProvider from "./AppContextProvider";
-import Home from "./components/Home/Home";
-import { generateId } from "./constants/generateId";
-import { testMessages, testUsers } from "./testData/testData";
+import "./server/server.ts";
+import Feed from "./pages/Feed/Feed";
+import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
+import UserPage from "./pages/UserPage/UserPage";
+import { $hasError, handleHasError, loginUser } from "./store";
 
-//mock API
-createServer({
-  routes() {
-    this.namespace = "api";
-
-    this.get("/profile", () => {
-      return testUsers[0];
-    });
-    this.get("/messages", () => {
-      //Let's imagine that sorting is on the server side
-      return testMessages.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateA < dateB ? 1 : -1;
-      });
-    });
-    this.post("/messages", (schema, request) => {
-      const attrs = JSON.parse(request.requestBody);
-      attrs.id = generateId();
-      return { message: attrs };
-    });
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Feed />,
   },
-});
+  {
+    path: "/user/:userId",
+    element: <UserPage />,
+  },
+]);
 
 const App = () => {
+  const hasError = useStore($hasError);
+
+  useEffect(() => {
+    //something like authentication,
+    //getting the user under which the interface is visible
+    fetch("/api/profile")
+      .then((response) => response.json())
+      .then((json) => loginUser(json))
+      .catch(() => handleHasError(true));
+  }, []);
+
   return (
-    <AppContextProvider>
-      <Home />
-    </AppContextProvider>
+    <div className="min-h-screen bg-[#eff6ff] px-8 py-5 space-y-7">
+      <RouterProvider router={router} />
+      {hasError && <ErrorAlert />}
+    </div>
   );
 };
 

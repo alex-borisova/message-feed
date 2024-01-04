@@ -1,7 +1,7 @@
 import { FC } from "react";
 import CardWrapper from "../../CardWrapper/CardWrapper";
 
-const Skeleton: FC = () => {
+const FeedSkeleton: FC = () => {
   const SkeletonItem = () => (
     <div className="flex items-center justify-between pt-4">
       <div>
@@ -27,4 +27,4 @@ const Skeleton: FC = () => {
   );
 };
 
-export default Skeleton;
+export default FeedSkeleton;

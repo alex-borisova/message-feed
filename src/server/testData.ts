@@ -15,7 +15,7 @@ export const testUsers = [
     surname: "Anders",
     email: "test2@test.com",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Aliquam vestibulum ac elit in porttitor. Pellentesque id libero tempor, vulputate dolor ut, feugiat augue. Proin non sapien mauris. Aliquam porta ex leo, sagittis auctor metus varius et. ",
     avatar:
       "https://cdn.pixabay.com/photo/2023/12/10/14/12/ai-generated-8441472_1280.jpg",
   },
@@ -25,7 +25,7 @@ export const testUsers = [
     surname: "Karn",
     email: "test3@test.com",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Duis laoreet congue lacus. Curabitur commodo commodo ipsum sed facilisis. Phasellus auctor libero tincidunt, imperdiet urna vitae, finibus arcu. Donec blandit tellus massa, ac finibus ante egestas et. Morbi ac mauris volutpat, rhoncus massa et, ultricies massa. Morbi consectetur ornare diam, et dignissim enim faucibus vulputate. Pellentesque interdum venenatis lectus, id auctor turpis vestibulum at. Cras et augue id ipsum ornare tincidunt et at justo. Proin eget scelerisque orci. Curabitur maximus ligula quis sapien maximus pretium. Sed ac pellentesque nulla, a aliquet ligula.",
     avatar:
       "https://cdn.pixabay.com/photo/2018/10/30/07/56/lady-3783027_1280.png",
   },
